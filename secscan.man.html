@@ -1,0 +1,296 @@
+
+<p><a href="#heading1">NAME</a><br/>
+<a href="#heading2">SYNOPSIS</a><br/>
+<a href="#heading3">AVAILABILITY</a><br/>
+<a href="#heading4">DESCRIPTION</a><br/>
+<a href="#heading5">OPTIONS</a><br/>
+<a href="#heading6">EXAMPLES</a><br/>
+<a href="#heading7">BUGS</a><br/>
+<a href="#heading8">SEE ALSO</a><br/>
+<a href="#heading9">AUTHOR</a><br/>
+
+</p>
+<hr/>
+
+
+<h2 id="heading1">NAME
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=secscan">secscan</a></b>
+- runs security systems applications on remote servers and
+raises alerts where problems are found.</p>
+
+<h2 id="heading2">SYNOPSIS
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><a href="./scripts.php?script=secscan">secscan</a></b>
+[<b>-c</b> <i>&lt;config_file&gt;</i>] [<b>-d</b>]
+[<b>-e</b> <i>&lt;rcpt&gt;</i>] [<b>-l</b>] [<b>-t</b> #]
+[<b>-u</b>] [<b>-U</b>] [<b>-v</b>]
+<i>&lt;hostname&gt;</i></p>
+
+<h2 id="heading3">AVAILABILITY
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b><a href="./scripts.php?script=secscan">secscan</a></b></i>
+was written as a Bourne shell script which should work
+equally well on all versions of UNIX and Linux.
+Unfortunately variables set in nested if statements do not
+consistently retain their values outside the if construct
+when using 64bit <b>bash</b>. The script works as expected
+with ksh.</p>
+
+<h2 id="heading4">DESCRIPTION
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The purpose of
+<b><a href="./scripts.php?script=secscan">secscan</a></b> is to check the integrity of security
+applications on remote hosts before running them. If all is
+well the remote software tools are run and the output
+checked to determine whether an alert needs to be
+raised.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In normal
+operation <b><a href="./scripts.php?script=secscan">secscan</a></b> will take <i>sha1</i> checksums of
+&quot;<i>rkhunter</i>&quot; and
+&quot;<i>rkhunter.conf</i>&quot; on the remote host and
+compare them to checksums stored on the invoking
+&quot;<i>administration</i>&quot; host. If the checksums
+deviate from the known checksums an alert is raised. by
+sending e-mail to the <b>root</b> user on the host from
+which <b><a href="./scripts.php?script=secscan">secscan</a></b> is invoked.</p>
+
+<h2 id="heading5">OPTIONS
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>
+<i>&lt;configuration_file&gt;</i></p>
+
+<p style="margin-left:18%;">By default <b><a href="./scripts.php?script=secscan">secscan</a></b> finds
+the configuration using a default path and
+<i>&lt;hostname&gt;</i> from the command line i.e.
+<i>/usr/local/etc/secscan.d/&lt;hostname&gt;.cf</i>&quot;.
+The <b>-c</b> option allows a different path to be used,
+perhaps for testing modifications or to use a common
+configuration over a number of hosts. The file name
+<i>&lt;hostname&gt;.cf</i> will be appended to the path. The
+same path will be used to store the checksums generated. By
+default the checksums are stored in
+<i>/usr/local/etc/secscan.d/&lt;hostname&gt;.sha1</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<colgroup><col width="11%"></col>
+<col width="3%"></col>
+<col width="4%" class="center"></col>
+<col width="82%"></col>
+</colgroup>
+<tr valign="top" align="left">
+<td></td>
+<td>
+
+
+<p><b>-d</b></p></td>
+<td></td>
+<td>
+
+
+<p>set debug mode. The <b>-x</b> option will be set for the
+shell and a number of break points will be used to allow
+output to be considered before proceeding.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-e</b>
+<i>&lt;recipient&gt;</i></p>
+
+<p style="margin-left:18%;">By default alerts are sent to
+the <b>root</b> user on the host invoking <b><a href="./scripts.php?script=secscan">secscan</a></b>.
+The <b>-e</b> option is used to set a different email
+recipient for the alerts. It is good practice to set an
+alias for root in <i>/etc/aliases</i> which will ensure the
+correct user gets all the systems critical messages. When
+staff changes occur only this one change to the
+<i>aliases</i> file will be needed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<colgroup><col width="11%"></col>
+<col width="6%"></col>
+<col width="1%" class="center"></col>
+<col width="82%"></col>
+</colgroup>
+<tr valign="top" align="left">
+<td></td>
+<td>
+
+
+<p><b>-l</b></p></td>
+<td></td>
+<td>
+
+
+<p>Use the <i>&lt;syslog&gt;</i> facility to log the
+invocation of <b><a href="./scripts.php?script=secscan">secscan</a></b> and the <i>update</i> level
+(see update options below). Logging script invocations is
+very useful where regualr reports need to be generated for
+required for clients or managers,</p></td></tr>
+<tr valign="top" align="left">
+<td></td>
+<td>
+
+
+<p><b>-t #</b></p></td>
+<td></td>
+<td>
+
+
+<p>Set a tolerance level for warnings generated by
+<b>rkhunter</b>. Where warnings are routinely issued
+regarding known issues it useful to be able to disregard
+them and not generate any alerts.</p></td></tr>
+<tr valign="top" align="left">
+<td></td>
+<td>
+
+
+<p><b>-u</b></p></td>
+<td></td>
+<td>
+
+
+<p>The script will use <i>shasum</i> on the remote host to
+generate new checksums for &quot;<i>rkhunter</i>&quot; and
+it&rsquo;s configuration file
+&quot;<i>rkhunter.conf</i>&quot;. The checksums will be
+stored on the host invoking <b><a href="./scripts.php?script=secscan">secscan</a></b> in the file
+<i>/usr/local/etc/secscan.d/&lt;hostname&gt;.sha1</i>. The
+update is loged if the <b>-l</b> option has been used.</p></td></tr>
+<tr valign="top" align="left">
+<td></td>
+<td>
+
+
+<p><b>-U</b></p></td>
+<td></td>
+<td>
+
+
+<p>In addition to the checksum updates initiated by the
+<b>-u</b> option the <b>rkhunter</b> properties database is
+also updated.</p></td></tr>
+<tr valign="top" align="left">
+<td></td>
+<td>
+
+
+<p><b>-v</b></p></td>
+<td></td>
+<td>
+
+
+<p>Use verbose mode. Each significant action will be
+reported to <i>stdout</i>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>&lt;hostname&gt;</i></p>
+
+<p style="margin-left:18%;">This is a required parameter
+and sets the target host name or IP.</p>
+
+<h2 id="heading6">EXAMPLES
+</h2>
+
+
+<pre style="margin-left:22%; margin-top: 1em"><a href="./scripts.php?script=secscan">secscan</a> -l -t 2 -u  boudica</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<i>/usr/local/etc/secscan.d/boudica.cf</i> to determine
+which scans to run on the host
+&quot;<i>boudica&quot;</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Create or
+update the checksums for the remote executables and their
+associated configuration files (i.e. <b>rkhunter</b> and
+<b>rkhunter.conf</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If there are no
+more that 2 warnings issued, all is well. If there are more
+than 2, send urgent email to the root user, on the current
+(administration) host.</p>
+
+<pre style="margin-left:22%; margin-top: 1em"><a href="./scripts.php?script=secscan">secscan</a> -l -t 2 arthur</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<i>/usr/local/etc/secscan.d/boudica.cf</i> to determine
+which scans to run on the host
+&quot;<i>arthur&quot;</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Compare the
+checksums for the current instances of the scanning tools
+and associated configuration files with the checksums held
+on administration server (the host invoking the secscan
+command). associated configuration files (i.e.
+<b>rkhunter</b> and <b>rkhunter.conf</b>). If the files are
+not identical send an urgent alert to the locally defined
+<i>root</i> user and terminate.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If there is no
+sign of the tools to be invoked being compromised, run them
+on the remote host.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>NB:
+rkhunter</b> is run first with the <b>--update</b> option to
+update it&rsquo;s text data files. It is then run again with
+the <b>--check</b> option to scan the system and generate
+it&rsquo;s reports.</p>
+
+<h2 id="heading7">BUGS
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The script has
+very little input error checking. Name resolution and
+network availability is not checked. It is designed to be
+used with frequently used host names where <b>ssh</b> keys
+have already been exchanged.</p>
+
+<p style="margin-left:11%; margin-top: 1em">I cobbled
+together <b><a href="./scripts.php?script=secscan">secscan</a></b> rather quickly in the expectation
+that a number of software scanning tools would be used but
+currently <b>rkhunter</b> is the only one and is hard coded.
+The configuration file is unused, this will change.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There appears
+to be bug in Slackware 64bit <b>bash</b> shell (see
+<b>AVAILABILITY</b> above) which causes the script to
+continue executing after errors which might indicate that
+the scanning software or configuration files have been
+compromised. To avoid this problem the <b>korn</b> shell is
+being used pro temp.</p>
+
+<h2 id="heading8">SEE ALSO
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><a href="./scripts.php?script=chkdf&amp;man=y">chkdf</a>,
+<a href="./scripts.php?script=chkftpd&amp;man=y">chkftpd</a>, <a href="./scripts.php?script=chkfw&amp;man=y">chkfw</a>.</p>
+
+<h2 id="heading9">AUTHOR
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Clifford W
+Fulford, <a href="http://www.citylinux.com"
+title="Go to the City Linux homepage">
+City Linux
+</a>. Contact <a href="mailto:fulford@fulford.net" title="Send mail to Clifford W Fulford">fulford@fulford.net</a> or +44
+(0)709 229 5385.</p>
+<hr/>

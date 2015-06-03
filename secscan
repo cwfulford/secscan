@@ -1,0 +1,156 @@
+#!/bin/ksh
+# $Id: secscan,v 1.30 2015/06/03 07:39:50 fulford Exp $
+# $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
+# $Revision: 1.30 $
+# Author C W Fulford.
+# Copyright (c) 2012-2013 C W Fulford. 
+# Licensed for public use under the LGPL.
+# For assistance contact fulford@fulford.net 0709 229 5385
+###################################################################
+cmd=`basename $0`
+syntax="syntax: $cmd [-c <config_file>] [-d] [-e mail_recipient] [-l] [-v] [-t #] [-u| -U ]  hostid"
+while [ $# -gt 0 ];do
+	case $1 in
+		-c) config=$2;shift 2;;
+		-d) debug=1;set -x;ed="ed";shift;;
+		-e) rcpt=$2;shift 2;;
+		-l) log=:;shift;;
+		-t) tolerate=$2;shift 2 ;;
+		-u) update_keys=1;shift;;
+		-U) update_keys=2;shift;;
+		-v) verbose=1;shift;;
+		-*) echo $syntax;shift;;
+		 *) hostid=$1;shift;;
+	esac
+done
+
+[ ! $hostid ]&&{ echo $syntax >&2;exit ;}
+verbose=${verbose:-0}
+config={config:-/usr/local/etc/secscan.d}
+# append the file name
+config=${config}/${hostid}.cf
+debug=${debug:-0}
+ed=${ed:-"ed -s"}
+log=${log:-""}
+logdir=/var/log/$hostid
+[ -d $logdir ] ||{
+	sudo mkdir -m 775 $logdir ||{
+		echo "$cmd: Can\'t create $logdir">&2
+		exit 1
+	}
+}
+logfile=/var/log/$hostid/secscan`date +%m`
+[ -f $logfile ] ||{
+	mkdir -p `dirname $logfile`
+	touch $logfile
+	[ $verbose -gt 0 ]&& echo "New $logfile created" 
+}
+rcpt=${rcpt:-root}; [ $verbose -gt 1 ]&& echo "verbose = $verbose"
+rklog=/var/log/rkhunter.log
+rkh_sha1=/var/tmp/rkh.sha1
+rkhconf_sha1=/var/tmp/rkhconf.sha1
+tolerate=${tolerate:-0}
+update_keys=${update_keys:-0}
+verbose=${verbose:-0}
+warnings=/var/tmp/rkwarn$$
+[ $verbose -gt 0 ] && echo "hostid = $hostid"
+sha1=/usr/local/etc/secscan.d/$hostid.sha1
+if [ -r $config ];then
+	. $config
+fi
+
+[ $log ]&& logger -t $cmd "$hostid started  update level $update_keys"
+
+[ $debug -gt 0 ]&& read
+
+
+_email (){
+	date=`date`
+	case $1 in
+		urgent)	subject="URGENT secscan $hostid $date";;
+		alert) subject="ALERT secscan $hostid $date"
+			 append="-a $warnings" ;;
+	esac
+	echo "$msg"|mailx -s "$subject" $append $rcpt
+	[ $verbose -gt 0 ] && echo "Secscan $1 email sent to $rcpt."
+}
+
+_rkh_chk (){
+	export ret_val=0
+	gawk < $sha1 '/rkhunter$/' >$rkh_sha1
+	#check that rkhunter hasn't changed
+	[ $verbose -gt 0 ] && echo -n "Checking rkhunter binary: "
+	nc -z -w 2 $hostid 22 ||{
+		echo "$cmd: ssh access to $hostid not available" >&2
+		exit 1
+	}
+	ssh $hostid "(cd /usr/local/bin;sudo shasum rkhunter)"|
+	if ! diff $rkh_sha1 - >>$logfile;then
+		msg="rkhunter on $hostid may be compromised!"
+		[ $verbose - gt 0 ]&& echo failed
+		echo "$cmd: $msg">&2
+		echo "Please correct and run $cmd with -u option."
+		_email urgent
+		ret_val=1
+	else
+		[ $verbose -gt 0 ] && echo "ok"
+		#check the rkhunter config file hasn't changed
+		[ $verbose -gt 0 ] && echo -n "Checking rkhunter.conf: "
+		gawk < $sha1 '/rkhunter.conf/' >$rkhconf_sha1
+		ssh $user $hostid "cd /usr/local/etc;
+			sudo shasum rkhunter.conf"|
+		if ! diff $rkhconf_sha1 - >>$logfile;then
+		     msg="rkhunter.conf on $hostid may be compromised!"
+		     [ $verbose -gt 0 ] && echo failed
+		     echo "$cmd: $msg"
+		     echo "Please check and rerun with -u option.">&2
+		    _email urgent
+		    ret_val=`expr $ret_val + 1`
+		fi
+		[ $verbose -gt 0 -a $ret_val -eq 0 ]&& echo "ok"
+	fi
+	return $ret_val
+}
+_rkh_run (){
+	[ $verbose -gt 0 ] && echo -n "Updating and running rkhunter: "
+	(ssh $hostid "sudo cp /dev/null $rklog;
+       	      sudo /usr/local/bin/rkhunter --update ;
+	      sudo /usr/local/bin/rkhunter -c -sk --no-color;
+	      sudo chmod g+r $rklog"
+	      scp -q $hostid:$rklog /var/log/$hostid
+              [ $debug -gt 1 ] && read
+	)>>$logfile
+}
+
+date > $logfile
+[ $debug -gt 0 ] && read
+if [ $update_keys -gt 0 ];then
+	if [ -f $sha1 ];then
+		[ $verbose -gt 0 ] && echo "removing rkhunter from $sha1"
+		$ed $sha1 <<- .
+			g/rkhunter/d
+			wq
+		.
+	else
+		echo "$cmd: creating $sha1"
+	fi
+	[ $verbose -gt 0 ] && echo "adding rkhunter.conf to $sha1"
+	ssh $hostid "cd /usr/local/etc/;sudo shasum rkhunter.conf" >>$sha1
+	[ $verbose -gt 0 ] && echo "adding rkhunter to $sha1"
+	ssh $hostid "cd /usr/local/bin;sudo shasum rkhunter" >>$sha1
+	if [ $update_keys -gt 1 ];then
+		[ $verbose -gt 0 ] && echo "Updating properties"
+		ssh $hostid"sudo /usr/local/bin/rkhunter --propupd"
+	fi
+fi
+if _rkh_chk ;then
+	_rkh_run
+	 grep "\[ Warning \]" /var/log/$hostid/`basename $rklog` >$warnings
+	 rkh_warnings=`cat $warnings | wc -l`
+	 msg="$rkh_warnings warning(s) found."
+	 [ $verbose -gt 0 ] && echo "$msg"
+	 if [ $rkh_warnings -gt $tolerate ];then
+		_email alert	
+		[ $log ] && logger -t $cmd "$msg"
+	 fi
+fi
