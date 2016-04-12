@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.31 2016/04/12 14:46:24 fulford Exp $
+# $Id: secscan,v 1.32 2016/04/12 14:49:16 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.31 $
+# $Revision: 1.32 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -34,7 +34,7 @@ ed=${ed:-"ed -s"}
 log=${log:-""}
 logdir=/var/log/secscan/$hostid
 [ -d $logdir ] ||{
-	sudo mkdir -m 775 $logdir ||{
+	sudo mkdir -p -m 775 $logdir ||{
 		echo "$cmd: Can\'t create $logdir">&2
 		exit 1
 	}
