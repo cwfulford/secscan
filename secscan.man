@@ -37,6 +37,7 @@ is invoked.
 .SH OPTIONS
 .TP 5
 \fB-a \fI<rootkit:filename>\fR
+.br
 The 
 .B -a
 option allows a file to be removed from the list of files associated with the
