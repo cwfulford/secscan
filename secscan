@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.55 2016/04/13 09:48:41 fulford Exp fulford $
+# $Id: secscan,v 1.56 2016/04/13 10:11:16 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.55 $
+# $Revision: 1.56 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -89,7 +89,7 @@ _rkh_chk (){
 	ssh $hostid "(cd /usr/local/bin;sudo shasum rkhunter)"|
 	if ! diff $rkh_sha1 - >>$logfile;then
 		msg="rkhunter on $hostid may be compromised!"
-		[ $verbose - gt 0 ]&& echo failed
+		[ $verbose -gt 0 ]&& echo failed
 		echo "$cmd: $msg">&2
 		echo "Please correct and run $cmd with -u option."
 		_email urgent
@@ -121,12 +121,12 @@ _rkh_run (){
 		[ "$verbose" ] &&{ echo "$cmd: Modifying rkhunter" ;}
 		kit=`echo $allow |awk -F: '{print $1}'`
 		afile=`echo $allow|awk -F: '{print $2}'|sed -e 's/\//\\//g'`
-		echo sed <$rkh -e "/$kit/,/^$/s/$file/\#/" >/tmp/rkhunter
-		rkh=/tmp/rkhunter
+		echo sed <$rkh -e "/$kit/,/^$/s/$file/\#/" #>/tmp/rkhunter
+		t_rkh=/tmp/rkhunter
 	      fi
 	      sudo $rkh -c -sk --no-color;
 	      [ "$verbose" ] && echo "$cmd: removing $rkh"
-	      sudo rm $rkh
+	      sudo rm $t_rkh
 	      sudo chmod g+r $rklog"
 	      scp -q $hostid:$rklog /var/log/rkhunter/$hostid
               [ $debug -gt 1 ] && read
