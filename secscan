@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.49 2016/04/13 09:30:44 fulford Exp fulford $
+# $Id: secscan,v 1.50 2016/04/13 09:32:05 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.49 $
+# $Revision: 1.50 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -114,6 +114,7 @@ _rkh_chk (){
 	return $ret_val
 }
 _rkh_run (){
+	echo here
 	[ $verbose -gt 0 ] && echo -n "Updating and running rkhunter: "
 	(ssh $hostid "sudo cp /dev/null $rklog;
        	      sudo $rkh --update ;
