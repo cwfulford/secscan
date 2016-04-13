@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.47 2016/04/13 09:23:45 fulford Exp fulford $
+# $Id: secscan,v 1.48 2016/04/13 09:24:22 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.47 $
+# $Revision: 1.48 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -125,7 +125,7 @@ _rkh_run (){
 		[ "$verbose" ] && echo "$cmd: removing $rkh"
 		rkh=/tmp/rkhunter
 	      fi
-	echo here >/dev/pts2
+	echo here >/dev/pts8
 	      sudo $rkh -c -sk --no-color;
 	      rm $rkh
 	      sudo chmod g+r $rklog"
