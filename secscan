@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.71 2016/04/13 12:18:49 fulford Exp fulford $
+# $Id: secscan,v 1.72 2016/04/13 12:19:36 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.71 $
+# $Revision: 1.72 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -118,10 +118,9 @@ _rkh_run (){
 	(ssh $hostid "sudo cp /dev/null $rklog;
        	      sudo $rkh --update ;
 	      if [ -n "$allow" ];then
-		echo pig >>/tmp/kit.log;
 		echo $allow >>/tmp/kit.log;
 		[ "$verbose" ] &&{ echo "$cmd: Modifying rkhunter" ;}
-		echo $allow |awk -F: '{print}' >>/tmp/kit.log;
+		echo $allow |awk -F: '{print $1}' >>/tmp/kit.log;
 	echo $kit  >>/tmp/kit.log;
 exit
 		echo "sed <$rkh -e \"$kit,/^$/{/$file/d}\"" >/dev/pts/8
