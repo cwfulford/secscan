@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.41 2016/04/13 09:13:44 fulford Exp fulford $
+# $Id: secscan,v 1.42 2016/04/13 09:16:20 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.41 $
+# $Revision: 1.42 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -155,6 +155,7 @@ if [ $update_keys -gt 0 ];then
 		ssh $hostid "sudo /usr/local/bin/rkhunter --propupd"
 	fi
 fi
+echo here1
 if _rkh_chk ;then
 	_rkh_run
 	 grep "\[ Warning \]" /var/log/$hostid/`basename $rklog` >$warnings
