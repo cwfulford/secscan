@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.78 2016/04/13 12:31:16 fulford Exp fulford $
+# $Id: secscan,v 1.79 2016/04/13 13:11:33 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.78 $
+# $Revision: 1.79 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -117,7 +117,7 @@ _rkh_run (){
 	[ $verbose -gt 0 ] && echo -n "Updating and running rkhunter: "
 	(ssh $hostid "sudo cp /dev/null $rklog;
        	      sudo $rkh --update ;
-	)>>$logfile
+	) >>$logfile
 	if [ -n "$allow" ];then
 		echo $allow >>/tmp/kit.log;
 		[ "$verbose" ] &&{ echo "$cmd: Modifying rkhunter" ;}
@@ -126,18 +126,18 @@ _rkh_run (){
 		echo cow >>/tmp/kit.log
 		echo $allow |awk -F: '{print $2}' >>/tmp/kit.log;
 	fi
-exit
-		echo "sed <$rkh -e \"$kit,/^$/{/$file/d}\"" >/dev/pts/8
-		sed <$rkh -e "/$kit/,/^$/{d/$file/" >$t_rkh
-	      	sudo $t_rkh -c -sk --no-color;
-	      	[ "$verbose" ] && echo "$cmd: removing $rkh"
+	#	echo "sed <$rkh -e \"$kit,/^$/{/$file/d}\"" >/dev/pts/8
+	#	sed <$rkh -e "/$kit/,/^$/{d/$file/" >$t_rkh
+	if [ -n "$allow"];then
+		ssh $hostid "sudo $t_rkh -c -sk --no-color" >>$logfile
+	      	[ "$verbose" ] && echo "$cmd: removing $rkh";
 	      	sudo rm $t_rkh
-	      else
-	      	sudo $rkh -c -sk --no-color;
-	      fi
-	      sudo chmod g+r $rklog"
-	      scp -q $hostid:$rklog /var/log/rkhunter/$hostid
-              [ $debug -gt 1 ] && read
+	 else
+	      	ssh $hostid "sudo $rkh -c -sk --no-color" >>$logfile
+	 fi
+	 ssh $hostid "sudo chmod g+r $rklog"
+	 scp -q $hostid:$rklog /var/log/rkhunter/$hostid
+         [ $debug -gt 1 ] && read
 }
 
 date > $logfile
