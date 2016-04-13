@@ -42,7 +42,7 @@ The
 .B -a
 option allows a file to be removed from the list of files associated with the
 prescence of a particular root kit.
-.LP 5
+.TP 5
 This option arises from the use of
 .B secscan
 on a
@@ -51,7 +51,7 @@ host where the quite legitimate presence of
 .I "/etc/ssh/sshd_config"
 generates a warning regarding a possible infection of Dica-Kit from 
 .BR rkhunter .
-.LP
+.TP
 The use of 
 .B -a Dica-Kit:/etc/ssh/sshd_config
 will create an amended temporary version of
