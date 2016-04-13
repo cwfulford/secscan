@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.92 2016/04/13 13:45:37 fulford Exp fulford $
+# $Id: secscan,v 1.93 2016/04/13 13:47:16 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.92 $
+# $Revision: 1.93 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -122,10 +122,8 @@ _rkh_run (){
 		file=`echo $allow |awk -F: '{print $2}'`;
 		file=`basename $file`
 		echo $file >>/tmp/kit.log;
-		echo cow >>/tmp/kit.log
 		ssh $hostid "sed <$rkh -e '/$kit/,/^$/{/'$file'/d}'" >$t_rkh
 	fi
-	exit
 	if [ -n "$allow" ];then
 		ssh $hostid "sudo $t_rkh -c -sk --no-color" >>$logfile
 	      	[ "$verbose" ] && echo "$cmd: removing $t_rkh";
