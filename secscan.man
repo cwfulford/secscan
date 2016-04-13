@@ -51,7 +51,8 @@ host where the quite legitimate presence of
 .I "/etc/ssh/sshd_config"
 generates a warning regarding a possible infection of Dica-Kit from 
 .BR rkhunter .
-.TP
+.br
+.br
 The use of 
 .B -a Dica-Kit:/etc/ssh/sshd_config
 will create an amended temporary version of
