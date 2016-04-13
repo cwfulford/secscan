@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.61 2016/04/13 12:06:13 fulford Exp $
+# $Id: secscan,v 1.62 2016/04/13 12:08:06 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.61 $
+# $Revision: 1.62 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -24,7 +24,7 @@ while [ $# -gt 0 ];do
 		 *) hostid=$1;shift;;
 	esac
 done
-
+echo $kit >/tmp/kit.log
 [ ! $hostid ]&&{ echo $syntax >&2;exit ;}
 verbose=${verbose:-0}
 config={config:-/usr/local/etc/secscan.d}
