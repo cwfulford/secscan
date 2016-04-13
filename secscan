@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.81 2016/04/13 13:15:31 fulford Exp fulford $
+# $Id: secscan,v 1.82 2016/04/13 13:20:03 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.81 $
+# $Revision: 1.82 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -119,16 +119,17 @@ _rkh_run (){
 	if [ -n "$allow" ];then
 		echo $allow >>/tmp/kit.log;
 		[ "$verbose" ] &&{ echo "$cmd: Modifying rkhunter" ;}
-		echo elephant  >>/tmp/kit.log
-		echo $allow |awk -F: '{print $1}' >>/tmp/kit.log;
+		kit=`echo $allow |awk -F: '{print $1}'`;
+		echo $kit >>/tmp/kit.log;
+		file=`echo $allow |awk -F: '{print $2}'`;
+		echo $file >>/tmp/kit.log;
 		echo cow >>/tmp/kit.log
-		echo $allow |awk -F: '{print $2}' >>/tmp/kit.log;
 	fi
 	#	echo "sed <$rkh -e \"$kit,/^$/{/$file/d}\"" >/dev/pts/8
 	#	sed <$rkh -e "/$kit/,/^$/{d/$file/" >$t_rkh
 	if [ -n "$allow" ];then
 		ssh $hostid "sudo $t_rkh -c -sk --no-color" >>$logfile
-	      	[ "$verbose" ] && echo "$cmd: removing $rkh";
+	      	[ "$verbose" ] && echo "$cmd: removing $t_rkh";
 	      	sudo rm $t_rkh
 	 else
 	      	ssh $hostid "sudo $rkh -c -sk --no-color" >>$logfile
