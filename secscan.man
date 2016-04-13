@@ -54,14 +54,7 @@ generates a warning from
 regarding a possible infection by 
 .BR Dica-Kit .
 .IP
-The use of 
-.B -a Dica-Kit:/etc/ssh/sshd_config
-will create an amended, temporary version of
-.B rkhunter
-which has had 
-.I sshd_config
-removed from the list of files associated with
-.IR Dica-Kit .
+See examples below.
 .TP 5
 \fB-c \fI<configuration_file>\fR
 .br
@@ -193,6 +186,18 @@ is run first with the
 option to update it's text data files. It is then run again with the
 .B --check
 option to scan the system and generate it's reports.
+.nf
+.ft CW		
+secscan -a Dica-Kit:/etc/ssh/sshd_config merlin
+.ft R
+.fi
+.LP
+The script will create an amended, temporary version of
+.I rkhunter
+which has had 
+.I sshd_config
+removed from the list of files associated with
+.IR Dica-Kit .
 .SH BUGS
 The script has very little input error checking. Name resolution and
 network availability is not checked. It is designed to be used

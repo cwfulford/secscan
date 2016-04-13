@@ -97,14 +97,7 @@ regarding a possible infection by
 <b>Dica-Kit.</b>
 </p>
 <p class="indent">
-The use of 
-<b>-a Dica-Kit:/etc/ssh/sshd_config</b>
-will create an amended, temporary version of
-<b>rkhunter</b>
-which has had 
-<i>sshd_config</i>
-removed from the list of files associated with
-<i>Dica-Kit</i>.
+See examples below.
 </p>
 <p class="indent">
 
@@ -290,6 +283,19 @@ is run first with the
 option to update it's text data files. It is then run again with the
 <b>--check</b>
 option to scan the system and generate it's reports.
+</p><div class="cmdline">
+<pre>		
+secscan -a Dica-Kit:/etc/ssh/sshd_config merlin
+</pre></div>
+<p class="indent">
+</p>
+<p class="indent">
+The script will create an amended, temporary version of
+<i>rkhunter</i>
+which has had 
+<i>sshd_config</i>
+removed from the list of files associated with
+<i>Dica-Kit</i>.
 </p>
 <h2 id="heading8">BUGS</h2>
 <p class="indent">
