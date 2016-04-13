@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.63 2016/04/13 12:08:32 fulford Exp fulford $
+# $Id: secscan,v 1.64 2016/04/13 12:09:21 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.63 $
+# $Revision: 1.64 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -11,7 +11,7 @@ cmd=`basename $0`
 syntax="syntax: $cmd [-a <rootkit:file> [-c <config_file>] [-d] [-e mail_recipient] [-l] [-v] [-t #] [-u| -U ]  hostid"
 while [ $# -gt 0 ];do
 	case $1 in
-		-a) allow=Dica:/etc/sshd_config;shift;;
+		-a) allow=$2;shift;;
 		-c) config=$2;shift 2;;
 		-d) debug=1;set -x;ed="ed";shift;;
 		-e) rcpt=$2;shift 2;;
