@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.52 2016/04/13 09:34:56 fulford Exp fulford $
+# $Id: secscan,v 1.53 2016/04/13 09:40:22 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.52 $
+# $Revision: 1.53 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -122,12 +122,12 @@ _rkh_run (){
 		[ "$verbose" ] &&{ echo "$cmd: Modifying rkhunter" ;}
 		kit=`echo $allow |awk -F: '{print $1}'`
 		afile=`echo $allow|awk -F: '{print $2}'|sed -e 's/\//\\//g'`
-		sed <$rkh -e "/$kit/,/^$/s/$file/\#/" >/tmp/rkhunter
-		[ "$verbose" ] && echo "$cmd: removing $rkh"
+		echo sed <$rkh -e "/$kit/,/^$/s/$file/\#/" >/tmp/rkhunter
 		rkh=/tmp/rkhunter
 	      fi
 	      sudo $rkh -c -sk --no-color;
-	      rm $rkh
+	      [ "$verbose" ] && echo "$cmd: removing $rkh"
+	      sudo rm $rkh
 	      sudo chmod g+r $rklog"
 	      scp -q $hostid:$rklog /var/log/rkhunter/$hostid
               [ $debug -gt 1 ] && read
