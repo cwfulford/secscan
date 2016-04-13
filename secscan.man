@@ -4,7 +4,7 @@
 - runs security systems applications on remote servers and raises alerts
 where problems are found. 
 .SH SYNOPSIS
-\fBsecscan\fR [\fB-c \fI<config_file>\fR] [\fB-d\fR] [\fB-e \fI<rcpt>\fR]
+\fBsecscan\fR [ -a <rootkit:filename>] [\fB-c \fI<config_file>\fR] [\fB-d\fR] [\fB-e \fI<rcpt>\fR]
 [\fB-l\fR] [\fB-t\fR #] [\fB-u\fR] [\fB-U\fR] [\fB-v\fR] \fI<hostname>\fR
 .SH AVAILABILITY
 .B secscan
@@ -35,6 +35,28 @@ user on the host from which
 .B secscan
 is invoked.
 .SH OPTIONS
+.TP 5
+\fB-a \fI<rootkit:filename>\fR
+The 
+.B -a
+option allows a file to be removed from the list of files associated with the
+prescence of a particular root kit.
+.TP 5
+This option arises from use on a
+.B Slackware
+host where the quite legitimate presence of 
+.I "/etc/ssh/sshd_config"
+generates a warning regarding a possible infection of Dica-Kit from 
+.BR rkhunter .
+.br
+The use of 
+.B -a Dica-Kit:/etc/ssh/sshd_config
+will create an amended temporary version of
+.B rkhunter
+which has 
+.I sshd_config
+removed from the list of files associated with
+.IR Dica-Kit .
 .TP 5
 \fB-c \fI<configuration_file>\fR
 By default 

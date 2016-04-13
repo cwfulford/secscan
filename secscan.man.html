@@ -8,7 +8,7 @@ where problems are found.
 <p class="indent">
 
 <b><a href="./scripts.php?script=secscan">secscan</a></b>
- [
+ [ -a &lt;rootkit:filename&gt;] [
 <b>-c </b>
 <i>&lt;config_file&gt;</i>
 ] [
@@ -72,6 +72,33 @@ is invoked.
 </p>
 <h2 id="heading5">OPTIONS</h2>
 <p class="indent">
+</p>
+<p class="indent">
+
+<b>-a </b>
+<i>&lt;rootkit:filename&gt;</i>
+
+The 
+<b>-a</b>&nbsp;&nbsp;&nbsp;
+option allows a file to be removed from the list of files associated with the
+prescence of a particular root kit.
+</p>
+<p class="indent">
+This option arises from use on a
+<b>Slackware</b>
+host where the quite legitimate presence of 
+<i>"/etc/ssh/sshd_config"</i>
+generates a warning regarding a possible infection of Dica-Kit from 
+<b>rkhunter.</b>
+<br/>
+The use of 
+<b>-a Dica-Kit:/etc/ssh/sshd_config</b>
+will create an amended temporary version of
+<b>rkhunter</b>
+which has 
+<i>sshd_config</i>
+removed from the list of files associated with
+<i>Dica-Kit</i>.
 </p>
 <p class="indent">
 
