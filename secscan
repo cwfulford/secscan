@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.84 2016/04/13 13:23:42 fulford Exp fulford $
+# $Id: secscan,v 1.85 2016/04/13 13:24:28 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.84 $
+# $Revision: 1.85 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -124,7 +124,7 @@ _rkh_run (){
 		echo $file >>/tmp/kit.log;
 		echo cow >>/tmp/kit.log
 		sed <$rkh -e "/$kit/,/^$/{
-			d/$file/
+			/$file/d
 		}" >$t_rkh
 	fi
 	exit
