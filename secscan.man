@@ -49,15 +49,17 @@ on a
 .B Slackware
 host where the quite legitimate presence of 
 .I "/etc/ssh/sshd_config"
-generates a warning regarding a possible infection of Dica-Kit from 
-.BR rkhunter .
+generates a warning from
+.B rkhunter
+regarding a possible infection by 
+.BR Dica-Kit .
 .br
 .br
 The use of 
 .B -a Dica-Kit:/etc/ssh/sshd_config
-will create an amended temporary version of
+will create an amended, temporary version of
 .B rkhunter
-which has 
+which has had 
 .I sshd_config
 removed from the list of files associated with
 .IR Dica-Kit .
