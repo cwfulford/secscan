@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $Id: secscan,v 1.44 2016/04/13 09:17:47 fulford Exp fulford $
+# $Id: secscan,v 1.45 2016/04/13 09:18:33 fulford Exp fulford $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
-# $Revision: 1.44 $
+# $Revision: 1.45 $
 # Author C W Fulford.
 # Copyright (c) 2012-2013 C W Fulford. 
 # Licensed for public use under the LGPL.
@@ -110,8 +110,8 @@ _rkh_chk (){
 		    ret_val=`expr $ret_val + 1`
 		fi
 		[ $verbose -gt 0 -a $ret_val -eq 0 ]&& echo "ok"
-	echo here2
 	fi
+	echo here2
 	return $ret_val
 }
 _rkh_run (){
