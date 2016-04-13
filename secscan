@@ -1,5 +1,5 @@
 #!/bin/ksh
-# $Id: secscan,v 1.95 2016/04/13 13:54:36 fulford Exp fulford $
+# $Id: secscan,v 1.95 2016/04/13 13:54:36 fulford Exp $
 # $Source: /src/merlin/usr/local/etc/RCS/secscan,v $
 # $Revision: 1.95 $
 # Author C W Fulford.
