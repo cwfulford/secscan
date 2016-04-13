@@ -64,6 +64,7 @@ removed from the list of files associated with
 .IR Dica-Kit .
 .TP 5
 \fB-c \fI<configuration_file>\fR
+.br
 By default 
 .B secscan
 finds the configuration using a default path and
@@ -79,12 +80,15 @@ checksums generated. By default the checksums are stored in
 \fI/usr/local/etc/secscan.d/<hostname>.sha1\fR.
 .TP 5
 .B -d
-set debug mode. The
+set debug mode.
+.IP
+The
 .B -x 
 option will be set for the shell and a number of break points will be used to
 allow output to be considered before proceeding.
 .TP 5
 \fB-e\fI <recipient>\fR
+.br
 By default alerts are sent to the
 .B root
 user on the host invoking
