@@ -198,6 +198,11 @@ which has had
 .I sshd_config
 removed from the list of files associated with
 .IR Dica-Kit .
+.LP
+The amended 
+.B rkhunter
+will then be run against the host 
+.BR merlin .
 .SH BUGS
 The script has very little input error checking. Name resolution and
 network availability is not checked. It is designed to be used
